@@ -20,7 +20,7 @@ func view(w http.ResponseWriter, r *http.Request) {
 
 func create(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPost {
-    w.Header().Set("Allow", http.MethodPost)
+		w.Header().Set("Allow", http.MethodPost)
 		http.Error(w, "Method now allowed.", http.StatusMethodNotAllowed)
 		return
 	}
@@ -28,11 +28,17 @@ func create(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte("Creating..."))
 }
 
-func main() {
+func routes() http.Handler {
 	mux := http.NewServeMux()
 	mux.HandleFunc("/", home)
 	mux.HandleFunc("/view", view)
 	mux.HandleFunc("/create", create)
+
+	return mux
+}
+
+func main() {
+	mux := routes()
 
 	log.Print("Starting on :4000")
 	err := http.ListenAndServe(":4000", mux)
