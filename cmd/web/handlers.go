@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"log"
 	"net/http"
 	"strconv"
 )
@@ -43,12 +42,4 @@ func routes() http.Handler {
 	mux.HandleFunc("/create", create)
 
 	return mux
-}
-
-func main() {
-	mux := routes()
-
-	log.Print("Starting on :4000")
-	err := http.ListenAndServe(":4000", mux)
-	log.Fatal(err)
 }
