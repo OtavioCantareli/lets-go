@@ -32,8 +32,6 @@ func home(w http.ResponseWriter, r *http.Request) {
 		log.Println(err.Error())
 		http.Error(w, "Internal server error.", http.StatusInternalServerError)
 	}
-
-	// w.Write([]byte("Ayooo"))
 }
 
 func view(w http.ResponseWriter, r *http.Request) {
@@ -58,6 +56,11 @@ func create(w http.ResponseWriter, r *http.Request) {
 
 func routes() http.Handler {
 	mux := http.NewServeMux()
+
+	fileServer := http.FileServer(http.Dir("./ui/static/"))
+
+	mux.Handle("/static/", http.StripPrefix("/static", fileServer))
+
 	mux.HandleFunc("/", home)
 	mux.HandleFunc("/view", view)
 	mux.HandleFunc("/create", create)
